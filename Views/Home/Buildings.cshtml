@@ -1,0 +1,36 @@
+﻿@using Reservations.Models
+@model Reservations.ViewModels.BuildingsViewModel
+
+@{
+    Model.Title = "Buildings";
+}
+
+<h2>Add a new building</h2>
+
+<form method="post">
+    <label>Name: <input type="text" asp-for="NewName"/></label><br/>
+    
+    <input type="submit" value="Add"/>
+</form>
+
+<hr/>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Room amount</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (Building building in Model.Buildings.OrderBy(building => building.Name)) {
+            <tr>
+                <td>@building.Name</td>
+                <td>@building.Rooms.Count.ToString()</td>
+                <td><a asp-controller="Home" asp-action="BuildingDetails" asp-route-id=@building.Id.ToString()>Details</a></td>
+                <td><a asp-controller="Home" asp-action="Buildings" asp-route-buildingToRemoveId="@building.Id.ToString()">Remove</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

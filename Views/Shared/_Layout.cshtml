@@ -1,0 +1,59 @@
+﻿@using System.Text
+@using Reservations.Controllers
+@model Reservations.ViewModels.BaseViewModel
+@{
+    // Use nameof to prevent magic strings
+    Dictionary<string, string[]> controllers = new() {
+        [nameof(HomeController)] = new[] {
+            nameof(HomeController.Index),
+            nameof(HomeController.Buildings),
+        },
+    };
+}
+
+@functions {
+    static string PascalCaseToNormal(string pascalString) {
+        var builder = new StringBuilder(pascalString.Length);
+
+        for (int i = 0; i < pascalString.Length; i++) {
+            char c = pascalString[i];
+
+            if ((i > 0) && (c >= 65) && (c <= 90)) builder.Append(' ').Append((char)(c + 32));
+            else builder.Append(c);
+        }
+
+        return builder.ToString();
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@Model.Title</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+</head>
+<body>
+<header>
+    @foreach (string controller in controllers.Keys) {
+        string controllerName = controller[..^10];
+
+        foreach (string pageName in controllers[controller]) {
+            string linkText = pageName == "Index" ? PascalCaseToNormal(controllerName) : PascalCaseToNormal(pageName);
+
+            if ((Model.Title == pageName) || ((Model.Title == controllerName) && (pageName == "Index"))) {
+                <h2><a class="current" asp-controller=@controllerName asp-action=@pageName>@linkText</a></h2>
+            } else {
+                <h2><a asp-controller=@controllerName asp-action=@pageName>@linkText</a></h2>
+            }
+        }
+    }
+</header>
+
+@RenderBody()
+<hr/>
+
+<footer>
+    <i>Aurel Leonard Danel © 2023</i>
+</footer>
+</body>
+</html>

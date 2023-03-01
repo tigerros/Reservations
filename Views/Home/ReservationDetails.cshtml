@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Reservations.ViewModels.ReservationDetailsViewModel
+
+@{
+    Model.Title = "Reservation \"" + Model.Reservation.Name + "\" details";
+}
+
+<h2>Reservation "@Model.Reservation.Name" details</h2>
+
+<form method="post">
+    <label>Edit name: <input type="text" asp-for="EditedName"/></label><br/>
+    <label>Edit start time: <input type="datetime-local" asp-for="EditedStartTime"/></label><br/>
+    <label>Edit end time: <input type="datetime-local" asp-for="EditedEndTime"/></label><br/>
+
+    <input type="hidden" asp-for="BuildingId" value="@Model.Reservation.BuildingId"/>
+    <input type="hidden" asp-for="RoomId" value="@Model.Reservation.RoomId"/>
+    <input type="hidden" asp-for="ReservationId" value="@Model.Reservation.Id"/>
+    <input type="submit" value="Save"/>
+</form>

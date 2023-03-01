@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Reservations.Models
+@model Reservations.ViewModels.BuildingDetailsViewModel
+
+@{
+    Model.Title = "Building \"" + Model.Building.Name + "\" details";
+}
+
+<h2>Building "@Model.Building.Name" details</h2>
+
+<form method="post">
+    <label>Edit building name: <input type="text" asp-for="EditedBuildingName"/></label><br/>
+
+    <input type="hidden" asp-for="Id" value="@Model.Building.Id"/>
+    <input type="submit" value="Save"/>
+</form>
+
+<hr/>
+
+<h2>Add a new room</h2>
+
+<form method="post">
+    <label>New room name: <input type="text" asp-for="NewRoomName"/></label><br/>
+
+    <input type="hidden" asp-for="Id" value="@Model.Building.Id"/>
+    <input type="submit" value="Add"/>
+</form>
+
+<hr/>
+
+<h3>List of rooms:</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Occupied</th>
+    </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (Room room in Model.Building.Rooms.OrderBy(room => room.Name)) {
+        <tr>
+            <td>@room.Name</td>
+            @if (room.ActiveReservation != null) {
+                <td>Yes</td>
+            } else {
+                <td>No</td>
+            }
+            <td><a asp-controller="Home" asp-action="RoomDetails" asp-route-buildingId="@Model.Building.Id.ToString()" asp-route-roomId=@room.Id.ToString()>Details</a></td>
+            <td><a asp-controller="Home" asp-action="BuildingDetails" asp-route-id="@Model.Building.Id.ToString()" asp-route-roomToRemoveId=@room.Id.ToString()>Remove</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

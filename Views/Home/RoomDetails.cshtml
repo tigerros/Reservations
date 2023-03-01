@@ -1,0 +1,73 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Reservations.Models
+@model Reservations.ViewModels.RoomDetailsViewModel
+
+@{
+    Model.Title = "Room \"" + Model.Room.Name + "\" details";
+}
+
+<h2>Room "@Model.Room.Name" details</h2>
+
+@if (Model.Room.ActiveReservation != null) {
+    <p>Reservation in effect: @Model.Room.ActiveReservation.Name.</p>   
+} else {
+    <p>Reservation in effect: None.</p>
+}
+
+<form method="post">
+    <label>Edit room name: <input type="text" asp-for="EditedRoomName"/></label><br/>
+
+    <input type="hidden" asp-for="IsEditRoomForm" value="true"/>
+    <input type="hidden" asp-for="BuildingId" value="@Model.Room.BuildingId"/>
+    <input type="hidden" asp-for="RoomId" value="@Model.Room.Id"/>
+    <input type="submit" value="Save"/>
+</form>
+
+<hr/>
+
+<h2>Add a new reservation</h2>
+
+<form method="post">
+    <table>
+        <tr>
+            <td><label>Reservation name:</label></td>
+            <td><input type="text" asp-for="NewReservationName"/></td>
+        </tr>
+        <tr>
+            <td><label>Reservation start time:</label></td>
+            <td><input type="datetime-local" asp-for="NewReservationStartTime" value="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"/></td>
+        </tr>
+        <tr>
+            <td><label>Reservation end time:</label></td>
+            <td><input type="datetime-local" asp-for="NewReservationEndTime" value="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"/></td>
+        </tr>
+    </table>
+    
+    <input type="hidden" asp-for="IsEditRoomForm" value="false"/>
+    <input type="hidden" asp-for="BuildingId" value="@Model.Room.BuildingId"/>
+    <input type="hidden" asp-for="RoomId" value="@Model.Room.Id"/>
+    <input type="submit" value="Add"/>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Start time</th>
+        <th>End time</th>
+    </tr>
+    </thead>
+    <hr/>
+    <tbody>
+    @foreach (Reservation reservation in Model.Room.Reservations.OrderBy(reservation => reservation.Name)) {
+        <tr>
+            <td>@reservation.Name</td>
+            <td>@reservation.StartTime.ToString(CultureInfo.CurrentCulture)</td>
+            <td>@reservation.EndTime.ToString(CultureInfo.CurrentCulture)</td>
+            <td><a asp-controller="Home" asp-action="ReservationDetails" asp-route-buildingId="@reservation.BuildingId" asp-route-roomId="@reservation.RoomId.ToString()" asp-route-reservationId="@reservation.Id.ToString()">Details</a></td>
+            <td><a asp-controller="Home" asp-action="RoomDetails" asp-route-buildingId="@reservation.BuildingId" asp-route-roomId="@reservation.RoomId.ToString()" asp-route-reservationToRemove="@reservation.Id.ToString()">Remove</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

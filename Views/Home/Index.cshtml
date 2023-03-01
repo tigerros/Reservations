@@ -1,0 +1,14 @@
+﻿@using Reservations.Models
+@using Reservations.Services
+@model Reservations.ViewModels.BaseViewModel
+
+@{
+    Model.Title = "Home";
+    Reservation? upcoming = ReservationsService.UpcomingReservation();
+}
+
+@if (upcoming == null) {
+    <h2>No upcoming reservations.</h2>
+} else {
+    <h2>Upcoming reservation: "@upcoming.Name" in building "@BuildingsService.GetBuilding(upcoming.BuildingId)?.Name" in room "@RoomsService.GetRoom(upcoming.BuildingId, upcoming.RoomId)!.Name" at @upcoming.StartTime.ToString("yyyy-MM-dd hh:mm") until @upcoming.EndTime.ToString("yyyy-MM-dd hh:mm")</h2>
+}

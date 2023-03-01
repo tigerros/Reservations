@@ -1,0 +1,94 @@
+body {
+  font-family: monospace, monospace;
+}
+
+a {
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+header {
+  background-color: black;
+  color: white;
+  padding: 0.5em 0 0.5em 0;
+  outline: 8px solid black;
+  margin-bottom: 16px;
+}
+
+header > h2 {
+  display: inline;
+  margin: 1em 1em 1em 0;
+  cursor: pointer;
+}
+
+header > h2:last-child {
+  margin: 1em 0 1em 0 !important;
+}
+
+header > h2 > a {
+  text-decoration: none;
+  font-weight: normal;
+  color: white !important;
+}
+
+header > h2 > a:hover {
+  font-weight: bold;
+}
+
+header > h2 > a.current {
+  font-weight: bold;
+}
+
+header > h2 > a.current:hover {
+  font-weight: normal;
+}
+
+tr:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+th:not(:first-child), td:not(:first-child) {
+  padding-left: 1em;
+}
+
+td:first-child, th:first-child {
+  text-align: left;
+}
+
+td:last-child, th:last-child {
+  text-align: right;
+}
+
+td:not(:first-child):not(:last-child), th:not(:first-child):not(:last-child) {
+  text-align: center;
+}
+
+button, form input[type=submit], a.button {
+  cursor: pointer;
+  padding: 0.5em;
+  background: black;
+  color: white;
+  border: none;
+  font-size: inherit;
+  text-decoration: none;
+  font-family: "Roboto Mono", monospace;
+}
+
+button:hover, form input[type=submit]:hover, a.button:hover {
+  text-decoration: underline;
+}
+
+form input {
+  border-radius: 0;
+}
+
+form input[type=text] {
+  border: 1px solid black;
+}
+
+form input[type=text], form a {
+  font-family: inherit;
+}
